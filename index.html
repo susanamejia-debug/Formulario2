@@ -815,8 +815,36 @@ const CONFIG_FORMULARIO = [
 ];
 
 
+function mostrarLogin() { document.getElementById('auth-registro').style.display='none'; document.getElementById('auth-login').style.display='block'; } 
 function mostrarRegistro() { document.getElementById('auth-login').style.display='none'; document.getElementById('auth-registro').style.display='block'; }
-function mostrarLogin() { document.getElementById('auth-registro').style.display='none'; document.getElementById('auth-login').style.display='block'; }
+
+function intentarLogin() {
+  const email = document.getElementById('login-email').value;
+  const id = document.getElementById('login-id').value;
+  
+  if(!email || !id) return alert("Por favor complete los campos.");
+
+  // ¡REVISA ESTA PARTE! Debe decir fetch, NO google.script.run
+  fetch(URL_GOOGLE_SCRIPT, {
+    method: "POST",
+    body: JSON.stringify({
+      accion: "login",
+      datos: { email: email, identificacion: id }
+    })
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.resultado === true) { 
+      usuarioEmail = email;
+      document.getElementById('auth-login').style.display='none'; // Revisa que diga .style.display y no .style.style.display
+      document.getElementById('main-content').style.display='block';
+      generarSidebar();
+    } else {
+      alert("Credenciales incorrectas o usuario no registrado.");
+    }
+  })
+  .catch(error => console.error("Error:", error));
+}
 
 function intentarRegistro() {
   const email = document.getElementById('reg-email').value;
@@ -839,35 +867,6 @@ function intentarRegistro() {
   })
   .catch(error => console.error("Error:", error));
 }
-
-function intentarLogin() {
-  const email = document.getElementById('login-email').value;
-  const id = document.getElementById('login-id').value;
-  
-  if(!email || !id) return alert("Por favor complete los campos.");
-
-  // ¡REVISA ESTA PARTE! Debe decir fetch, NO google.script.run
-  fetch(https://script.google.com/a/macros/davivienda.com.sv/s/AKfycbzG9P8sfh1XA6bowcvdoxONBj54Ih3LNyIoUMxsBayMFKovzy6xYA4M3yh_vJXeYQAv/exec, {
-    method: "POST",
-    body: JSON.stringify({
-      accion: "login",
-      datos: { email: email, identificacion: id }
-    })
-  })
-  .then(res => res.json())
-  .then(res => {
-    if(res.resultado === true) { 
-      usuarioEmail = email;
-      document.getElementById('auth-login').style.display='none'; // Revisa que diga .style.display y no .style.style.display
-      document.getElementById('main-content').style.display='block';
-      generarSidebar();
-    } else {
-      alert("Credenciales incorrectas o usuario no registrado.");
-    }
-  })
-  .catch(error => console.error("Error:", error));
-}
-
 
 function generarSidebar() {
   const menu = document.getElementById('sidebar-menu');
