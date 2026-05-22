@@ -249,7 +249,7 @@
 
 </div>
 
-<script src="https://maps.googleapis.com/maps/api/js?v=3.exp"></script>
+<script src="https://script.google.com/a/macros/davivienda.com.sv/s/AKfycbzG9P8sfh1XA6bowcvdoxONBj54Ih3LNyIoUMxsBayMFKovzy6xYA4M3yh_vJXeYQAv/exec"></script>
 
 <script>
 let usuarioEmail = "";
@@ -821,21 +821,50 @@ function mostrarLogin() { document.getElementById('auth-registro').style.display
 function intentarRegistro() {
   const email = document.getElementById('reg-email').value;
   const id = document.getElementById('reg-id').value;
+  
   if(!email || !id) return alert("Por favor complete los campos.");
-  google.script.run.withSuccessHandler(res => { alert(res); mostrarLogin(); }).registrarUsuario(email, id);
+
+  // Enviamos los datos a Google mediante un POST externo
+  fetch(URL_GOOGLE_SCRIPT, {
+    method: "POST",
+    body: JSON.stringify({
+      accion: "registrar",
+      datos: { email: email, identificacion: id }
+    })
+  })
+  .then(res => res.json())
+  .then(res => {
+    alert(res.resultado); // Muestra el mensaje de "Registro exitoso" o "Ya registrado"
+    mostrarLogin();
+  })
+  .catch(error => console.error("Error:", error));
 }
 
 function intentarLogin() {
   const email = document.getElementById('login-email').value;
   const id = document.getElementById('login-id').value;
-  google.script.run.withSuccessHandler(valido => {
-    if(valido) {
+  
+  if(!email || !id) return alert("Por favor complete los campos.");
+
+  fetch(URL_GOOGLE_SCRIPT, {
+    method: "POST",
+    body: JSON.stringify({
+      accion: "login",
+      datos: { email: email, identificacion: id }
+    })
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.resultado === true) { // Si Google responde que el usuario existe
       usuarioEmail = email;
-      document.getElementById('auth-login').style.display='none';
+      document.getElementById('auth-login').style.style.display='none';
       document.getElementById('main-content').style.display='block';
       generarSidebar();
-    } else alert("Credenciales incorrectas.");
-  }).loginUsuario(email, id);
+    } else {
+      alert("Credenciales incorrectas o usuario no registrado.");
+    }
+  })
+  .catch(error => console.error("Error:", error));
 }
 
 
@@ -993,7 +1022,6 @@ function actualizarBarra() {
 function finalizar() {
   if(!validarSeccion()) return;
   
-  // Guardamos el correo del usuario activo
   const data = { "email_usuario": usuarioEmail };
   
   CONFIG_FORMULARIO.forEach(sec => {
@@ -1002,7 +1030,6 @@ function finalizar() {
       if(el.length > 0) {
         const divPadre = document.getElementById(`div-${p.id}`);
         
-        // Si el campo está oculto por lógica, se envía vacío
         if (divPadre && divPadre.style.display === 'none') {
           data[p.id] = "";
         } else {
@@ -1015,12 +1042,31 @@ function finalizar() {
   
   document.getElementById('btnEnviar').disabled = true;
   
-  // Enviamos los datos mapeados por ID al servidor
-  google.script.run.withSuccessHandler(() => { 
-    alert("¡Actualización guardada con éxito!"); 
-    location.reload(); 
-  }).guardarDatos(data);
-}le.script.run.withSuccessHandler(() => { alert("¡Guardado!"); location.reload(); }).guardarDatos(data);
+  // Enviamos todo el bloque de respuestas a Google Sheets
+  fetch(URL_GOOGLE_SCRIPT, {
+    method: "POST",
+    body: JSON.stringify({
+      accion: "guardar",
+      datos: data
+    })
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.resultado === "Éxito") {
+      alert("¡Actualización guardada con éxito!");
+      location.reload();
+    } else {
+      alert("Hubo un problema: " + res.resultado);
+      document.getElementById('btnEnviar').disabled = false;
+    }
+  })
+  .catch(error => {
+    console.error("Error:", error);
+    document.getElementById('btnEnviar').disabled = false;
+  });
+}
+
+le.script.run.withSuccessHandler(() => { alert("¡Guardado!"); location.reload(); }).guardarDatos(data);
 
 </script>
 </body>
