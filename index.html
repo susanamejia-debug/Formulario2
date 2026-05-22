@@ -846,6 +846,7 @@ function intentarLogin() {
   
   if(!email || !id) return alert("Por favor complete los campos.");
 
+  // ¡REVISA ESTA PARTE! Debe decir fetch, NO google.script.run
   fetch(URL_GOOGLE_SCRIPT, {
     method: "POST",
     body: JSON.stringify({
@@ -855,9 +856,9 @@ function intentarLogin() {
   })
   .then(res => res.json())
   .then(res => {
-    if(res.resultado === true) { // Si Google responde que el usuario existe
+    if(res.resultado === true) { 
       usuarioEmail = email;
-      document.getElementById('auth-login').style.style.display='none';
+      document.getElementById('auth-login').style.display='none'; // Revisa que diga .style.display y no .style.style.display
       document.getElementById('main-content').style.display='block';
       generarSidebar();
     } else {
