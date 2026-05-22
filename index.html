@@ -249,13 +249,15 @@
 
 </div>
 
-<script 
-  const URL_GOOGLE_SCRIPT = "https://script.google.com/a/macros/davivienda.com.sv/s/AKfycbzG9P8sfh1XA6bowcvdoxONBj54Ih3LNyIoUMxsBayMFKovzy6xYA4M3yh_vJXeYQAv/exec">
+<script>
+  // 1. URL DE TU WEB APP DE GOOGLE (Asegúrate de que sea la tuya de producción)
+  const URL_GOOGLE_SCRIPT = "https://script.google.com/a/macros/davivienda.com.sv/s/AKfycbzG9P8sfh1XA6bowcvdoxONBj54Ih3LNyIoUMxsBayMFKovzy6xYA4M3yh_vJXeYQAv/exec";
 
   let usuarioEmail = "";
   let seccionActual = 0;
   let mapa, marcador;
 
+  // 2. CONFIGURACIÓN DEL FORMULARIO (Mapeo de tus preguntas)
   const CONFIG_FORMULARIO = [
     {
       titulo: "Información Personal",
@@ -266,7 +268,7 @@
         { id: "otro_tipo", label: "¿Qué tipo de documento posee?", tipo: "text", dependeDe: "tipo_doc", valorPadre: "Otro" },
         { id: "num_doc", label: "Número de documento de identidad", tipo: "text" },
         { id: "puesto", label: "Puesto que desempeña actualmente", tipo: "text" },
-        { id: "dep", label: "Departamento al que pertenece", tipo: "select", opciones: ["ADJUDICACION DE CREDITO", "ADMINISTRACION", "ADMINISTRACION DE BIENES INMUEBLES", "ADMINISTRACIÓN DE CRÉDITO", "ADMINISTRACION DE PORTAFOLIOS", "ADMINISTRACION PORTAFOLIO Y RENTABILIDAD", "AML & CONTROL INTERNO", "AML & SOSTENIBILIDAD DE CALIDAD", "ANALITICA", "ANALITICA BANCA COMERCIAL", "ANALITICA DE RIESGO", "APOYO A LAS OPERACIONES", "APOYO A PROCESOS DE CREDITO-UNIDAD LSU", "ASEGURAMIENTO INFORMACION CLIE", "AUDITORIA", "BANCA COMERCIAL", "BANCA CORPORATIVA", "BANCA INTERNACIONAL", "BANCA PREMIUM", "BANCA PRIVADA", "CARTERA", "COBROS BANCA PERSONAS", "COMERCIALES", "COMERCIO EXTERIOR Y FIDUCIARIA", "COMPRAS", "CONTABILIDAD", "CORRESPONSALÍA BANCARIA", "CREDITO Y COBRANZA CORPORATIVO", "CREDITO Y COBRANZA PERSONAS", "CREDITOS ESPECIALES Y COBROS", "CSI - DESARROLLO Y SOPORTE SISTEMAS", "CSI- ANALISIS DE NEGOCIOS", "CSI- DIRECCION", "CSI- GESTION DE CONTROL TI", "CSI INFRAESTRUCTURA LOCAL", "CUMPLIMIENTO", "DESARROLLO DE CICLO DE VIDA", "DIRECCION BANCA PERSONAS Y PYMES", "DIRECCION DE BANCA CORPORATIVA", "DIRECCION DE CREDITO Y COBRO BA", "DIRECCION FINANZAS", "DIRECCION RIESGO NO FINANCIEROS", "EXPERIENCIA AL CLIENTE", "FIDEICOMISO", "GESTION DOCUMENTAL", "INTELIGENCIA DE NEGOCIOS", "INVERSIONES", "JURIDICA", "LOGISTICA DE MEDIOS DE PAGO", "MERCADEO", "MERCADO Y LIQUIDEZ", "OPERACIONES", "OPERACIONES DEL PASIVO", "PAGOS", "PAGOS Y SERVICIOS ADMINISTRATI", "PLANEACION FINANCIERA", "PRESIDENCIA EJECUTIVA", "PREVENCION LAVADO DINERO (AML/AFT)", "PRODUCTOS", "PROGRAMAS REGULATORIOS Y OPERATIVOS", "PROYECTOS CASA MATRIZ", "PROYECTOS Y PROCESOS", "PSC - PROCESOS CENTRALES", "PSC - VERIFICACION", "PYMES", "RED DE SUCURSALES", "REPORTES REGULATORIOS", "RIESGO BANCA PERSONAL Y PYMES", "RIESGO CREDITO CORP Y COM", "RIESGO DE CREDITO", "RIESGO OPERATIVO", "RIESGO TRANSACCIONAL", "ROTATIVO", "SAR", "SEGMENTOS Y CANALES", "SEGURIDAD CORPORATIVA", "SEGUROS", "SOLUCIONES DE CREDITO", "SOPORTE CICLO DE VIDA & ADQUIRENCIA", "SOPORTE OPERATIVO", "SUC. ALBROOK", "SUC. BELLA VISTA", "SUC. COSTA DEL ESTE II", "SUC. DAVID", "SUC. EL DORADO", "SUC. LA CHORRERA", "SUC. MULTIPLAZA", "SUC. PUNTA PACIFICA", "SUC. SCOTIA PLAZA", "SUCURSAL CALLE 50", "SUCURSAL COSTA DEL ESTE", "SUCURSAL LOS PUEBLOS", "SUCURSAL PRINCIPAL", "SUCURSAL ZONA LIBRE", "TALENTO HUMANO", "TECNOLOGIA", "TELEVENTAS - CONTROL DE CALIDAD", "TELEVENTAS - DEEPENING", "TELEVENTAS - DIGITAL", "TELEVENTAS - MULTIPRODUCTO", "TELEVENTAS - SEGUROS", "TESORERIA", "TRANSACCIONES GLOBALES BANCARIAS", "TRANSFORMACION DIGITAL", "UNIDAD DE SOPORTE A VENTAS (SSU)", "VENTAS EXTERNAS BANK @ WORK", "VENTAS EXTERNAS HIPOTECA", "VENTAS EXTERNAS HIPOTECA -SOPORTE", "VENTAS EXTERNAS HIPOTECAS Y VEHICULOS", "VENTAS EXTERNAS TELEVENTAS Y BANK@WORK", "VENTAS EXTERNAS VEHICULOS"] },
+        { id: "dep", label: "Departamento al que pertenece", tipo: "select", opciones: ["ADJUDICACION DE CREDITO", "ADMINISTRACION", "ADMINISTRACION DE BIENES INMUEBLES", "ADMINISTRACIÓN DE CRÉDITO", "ADMINISTRACION DE PORTAFOLIOS", "ADMINISTRACION PORTAFOLIO Y RENTABILIDAD", "AML & CONTROL INTERNO", "AML & SOSTENIBILIDAD DE CALIDAD", "ANALITICA", "ANALITICA BANCA COMERCIAL", "ANALITICA DE RIESGO", "APOYO A LAS OPERACIONES", "APOYO A PROCESOS DE CREDITO-UNIDAD LSU", "ASEGURAMIENTO INFORMACION CLIE", "AUDITORIA", "BANCA COMERCIAL", "BANCA CORPORATIVA", "BANCA INTERNACIONAL", "BANCA PREMIUM", "BANCA PRIVADA", "CARTERA", "COBROS BANCA PERSONAS", "COMERCIALES", "COMERCIO EXTERIOR Y FIDUCIARIA", "COMPRAS", "CONTABILIDAD", "CORRESPONSALÍA BANCARIA", "CREDITO Y COBRANZA CORPORATIVO", "CREDITO Y COBRANZA PERSONAS", "CREDITOS ESPECIALES Y COBROS", "CSI - DESARROLLO Y SOPORTE SISTEMAS", "CSI- ANALISIS DE NEGOCIOS", "CSI- DIRECCION", "CSI- GESTION DE CONTROL TI", "CSI INFRAESTRUCTURA LOCAL", "CUMPLIMIENTO", "DESARROLLO DE CICLO DE VIDA", "DIRECCION BANCA PERSONAS Y PYMES", "DIRECCION DE BANCA CORPORATIVA", "DIRECCION DE CREDITO Y COBRO BA", "DIRECCION FINANZAS", "DIRECCION RIESGO NO FINANCIEROS", "EXPERIENCIA AL CLIENTE", "FIDEICOMISO", "GESTION DOCUMENTAL", "INTELIGENCIA DE NEGOCIOS", "INVERSIONES", "JURIDICA", "LOGISTICA DE MEDIOS DE PAGO", "MERCADEO", "MERCADO Y LIQUIDEZ", "OPERACIONES", "OPERACIONES DEL PASIVO", "PAGOS", "PAGOS Y SERVICIOS ADMINISTRATI", "PLANEACION FINANCIERA", "PRESIDENCIA EJECUTIVA", "PREVENCION LAVADO DINERO (AML/AFT)", "PRODUCTOS", "PROGRAMAS REGULATORIOS Y OPERATIVOS", "PROYECTOS CASA MATRIZ", "PROYECTOS Y PROCESOS", "PSC - PROCESOS CENTRALES", "PSC - VERIFICACION", "PYMES", "RED DE SUCUrSALES", "REPORTES REGULATORIOS", "RIESGO BANCA PERSONAL Y PYMES", "RIESGO CREDITO CORP Y COM", "RIESGO DE CREDITO", "RIESGO OPERATIVO", "RIESGO TRANSACCIONAL", "ROTATIVO", "SAR", "SEGMENTOS Y CANALES", "SEGURIDAD CORPORATIVA", "SEGUROS", "SOLUCIONES DE CREDITO", "SOPORTE CICLO DE VIDA & ADQUIRENCIA", "SOPORTE OPERATIVO", "SUC. ALBROOK", "SUC. BELLA VISTA", "SUC. COSTA DEL ESTE II", "SUC. DAVID", "SUC. EL DORADO", "SUC. LA CHORRERA", "SUC. MULTIPLAZA", "SUC. PUNTA PACIFICA", "SUC. SCOTIA PLAZA", "SUCURSAL CALLE 50", "SUCURSAL COSTA DEL ESTE", "SUCURSAL LOS PUEBLOS", "SUCURSAL PRINCIPAL", "SUCURSAL ZONA LIBRE", "TALENTO HUMANO", "TECNOLOGIA", "TELEVENTAS - CONTROL DE CALIDAD", "TELEVENTAS - DEEPENING", "TELEVENTAS - DIGITAL", "TELEVENTAS - MULTIPRODUCTO", "TELEVENTAS - SEGUROS", "TESORERIA", "TRANSACCIONES GLOBALES BANCARIAS", "TRANSFORMACION DIGITAL", "UNIDAD DE SOPORTE A VENTAS (SSU)", "VENTAS EXTERNAS BANK @ WORK", "VENTAS EXTERNAS HIPOTECA", "VENTAS EXTERNAS HIPOTECA -SOPORTE", "VENTAS EXTERNAS HIPOTECAS Y VEHICULOS", "VENTAS EXTERNAS TELEVENTAS Y BANK@WORK", "VENTAS EXTERNAS VEHICULOS"] },
         { id: "Fecha_nacimiento", label: "Fecha de nacimiento", tipo: "date" },
         { id: "pais_nacimiento", label: "País de nacimiento", tipo: "text" },
         { id: "#_trabajo", label: "# de permiso de trabajo", tipo: "text" },
@@ -398,7 +400,7 @@
         { id: "modelo_vehiculos2", label: "Modelo del vehículo", tipo: "text", dependeDe: "mas_vehiculos", valorPadre: "Si" },
         { id: "año_vehiculo2", label: "Año del vehículo", tipo: "text", dependeDe: "mas_vehiculos", valorPadre: "Si" },
         { id: "numero_placa2", label: "Número de placa del vehículo", tipo: "text", dependeDe: "mas_vehiculos", valorPadre: "Si" },
-        { id: "voluntariados", label: "¿Participa en voluntariados fuera del banco?", tipo: "radio", opciones: ["Si", "No"] },
+        { id: "voluntariados", label: Nav-item-custom"¿Participa en voluntariados fuera del banco?", tipo: "radio", opciones: ["Si", "No"] },
         { id: "nombre_voluntariado", label: "Indique el nombre del voluntariado en que participa (Separe por comas en caso de ser más de uno)", tipo: "text", dependeDe: "voluntariados", valorPadre: "Si" }
       ]
     },
@@ -449,7 +451,7 @@
         { id: "edad_parentesco2", label: "Edad del dependiente 2", tipo: "text", dependeDe: "canti_depen", valorPadre: ["2", "3", "4", "5", "6", "7", "8", "9", "10"] },
         { id: "tipo_dependiente2", label: "Tipo de dependencia", tipo: "select", opciones: ["Parcial", "Completa"], dependeDe: "canti_depen", valorPadre: ["2", "3", "4", "5", "6", "7", "8", "9", "10"] },
         { id: "nombre_dependiente3", label: "Nombre completo del dependiente 3", tipo: "text", dependeDe: "canti_depen", valorPadre: ["3", "4", "5", "6", "7", "8", "9", "10"] },
-        { id: "parentesco_dependiente3", label: "Parentesco del dependiente 3", tipo: "text", dependeDe: "canti_depen", valorPadre: ["3", "4", "5", "6", "7", "8", "9", "10"] },
+        { id: "parentesco_dependiente3", label: "Parentesco del Halliwell d", tipo: "text", dependeDe: "canti_depen", valorPadre: ["3", "4", "5", "6", "7", "8", "9", "10"] },
         { id: "edad_parentesco3", label: "Edad del dependiente 3", tipo: "text", dependeDe: "canti_depen", valorPadre: ["3", "4", "5", "6", "7", "8", "9", "10"] },
         { id: "tipo_dependiente3", label: "Tipo de dependencia", tipo: "select", opciones: ["Parcial", "Completa"], dependeDe: "canti_depen", valorPadre: ["3", "4", "5", "6", "7", "8", "9", "10"] },
         { id: "nombre_dependiente4", label: "Nombre completo del dependiente 4", tipo: "text", dependeDe: "canti_depen", valorPadre: ["4", "5", "6", "7", "8", "9", "10"] },
@@ -480,7 +482,7 @@
         { id: "parentesco_dependiente10", label: "Parentesco del dependiente 10", tipo: "text", dependeDe: "canti_depen", valorPadre: "10" },
         { id: "edad_parentesco10", label: "Edad del dependiente 10", tipo: "text", dependeDe: "canti_depen", valorPadre: "10" },
         { id: "tipo_dependiente10", label: "Tipo de dependencia", tipo: "select", opciones: ["Parcial", "Completa"], dependeDe: "canti_depen", valorPadre: "10" }
-      ]  
+      ]
     },
     {
       titulo: "Formación Profesional",
@@ -507,7 +509,7 @@
         { id: "donante", label: "¿Es donante de sangre?", tipo: "radio", opciones: ["Si", "No"] },
         { id: "discapacidad", label: "¿Posee alguna discapacidad temporal o permanente?", tipo: "radio", opciones: ["Si", "No"] },
         { id: "discapacidad_diag", label: "Diagnostico de discapacidad", tipo: "text", dependeDe: "discapacidad", valorPadre: "Si" },
-        { id: "familia_discapacidad", label: "¿Tiene algún familiar con discapacidad que dependa de usted directamente?", tipo: "radio", opciones: ["Si", "No"] },
+        { id: "familia_discapacidad", label: "Tiene algún familiar con discapacidad que dependa de usted directamente?", tipo: "radio", opciones: ["Si", "No"] },
         { id: "parentesco_disca", label: "Parentesco del familiar con discapacidad", tipo: "text", dependeDe: "familia_discapacidad", valorPadre: "Si" },
         { id: "fami_diag", label: "Diagnostico de discapacidad de su familiar", tipo: "text", dependeDe: "familia_discapacidad", valorPadre: "Si" },
         { id: "enfermedad_cronica", label: "¿Tiene alguna enfermedad o condición crónica?", tipo: "radio", opciones: ["Si", "No"] },
@@ -546,7 +548,7 @@
         { id: "empresa", label: "Nombre de la empresa", tipo: "text", dependeDe: "fuera_banco", valorPadre: "Si" },
         { id: "posicion_fuera", label: "Posición en la que se encuentra", tipo: "text", dependeDe: "fuera_banco", valorPadre: "Si" },
         { id: "salario_fuera", label: "Salario que posee", tipo: "text", dependeDe: "fuera_banco", valorPadre: "Si" },
-        { id: "otros_ingresos", label: "Posee otros ingresos?", tipo: "radio", opciones: ["Si", "No"] },
+        { id: "otros_ingresos", label: "Otros ingresos", tipo: "radio", opciones: ["Si", "No"] },
         { id: "recurrencia", label: "Monto total de todos los ingresos por recurrencia", tipo: "text", dependeDe: "otros_ingresos", valorPadre: "Si" },
         { id: "ejemplos", label: "Ejemplos de otros ingresos: detalles e indicar monto mensual", tipo: "text", dependeDe: "otros_ingresos", valorPadre: "Si" },
         { id: "monto_ingresos", label: "Recurrencia de otros ingresos", tipo: "select", opciones: ["Semanal", "Mensual", "Trimestral", "Semestral", "Anual"], dependeDe: "otros_ingresos", valorPadre: "Si" },
@@ -572,6 +574,7 @@
         { id: "nombre_banco", label: "Nombre del Banco", tipo: "text", dependeDe: "obligaciones", valorPadre: "Si" },
         { id: "producto_obli", label: "Producto", tipo: "text", dependeDe: "obligaciones", valorPadre: "Si" },
         { id: "monto_obli", label: "Monto Total", tipo: "text", dependeDe: "obligaciones", valorPadre: "Si" },
+        { id: "embargos", label: "¿Usted posee embargos, pensiones alimenticias o juicios en proceso?", tipo: "radio", opciones: ["Si", "No"] },
         { id: "detalle_proce", label: "Detalle del proceso", tipo: "text", dependeDe: "embargos", valorPadre: "Si" },
         { id: "tipo_vivienda", label: "Tipo de vivienda", tipo: "select", opciones: ["Propia (con financiamiento)", "Alquilado", "Propia (ya pagada)", "Pertenece a sus padres u otros familiares"] },
         { id: "creditos1", label: "¿Posee créditos hipotecarios o en su defecto arrendamiento?", tipo: "radio", opciones: ["Si", "No"] },
@@ -606,66 +609,66 @@
         { id: "pago_men_credi3", label: "Pago mensual", tipo: "text", dependeDe: "canti_crediper", valorPadre: "2 más" },
         { id: "estado_actu_credi3", label: "Indique el estado actual de su prestamo", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "canti_crediper", valorPadre: "2 más" },
         { id: "credi_prendrios", label: "¿Posee algún crédito prendario?", tipo: "radio", opciones: ["Si", "No"] },
-        { id: "entidad5", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "credi_prendrios", valorPadre: "Si" },
+        { id: "entidad6", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "credi_prendrios", valorPadre: "Si" },
         { id: "monto_credi_pren1", label: "Monto original $", tipo: "text", dependeDe: "credi_prendrios", valorPadre: "Si" },
         { id: "pago_men_pren1", label: "Pago mensual", tipo: "text", dependeDe: "credi_prendrios", valorPadre: "Si" },
         { id: "estado_actu_pren1", label: "Indique el estado actual de su prestamo", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "credi_prendrios", valorPadre: "Si" },
         { id: "mas_prendrios", label: "¿Posee más de un crédito prendario?", tipo: "radio", opciones: ["Si", "No"], dependeDe: "credi_prendrios", valorPadre: "Si" },
         { id: "canti_prendrios", label: "¿Cuántos créditos prendarios adicionales posee?", tipo: "select", opciones: ["1 más", "2 más"], dependeDe: "mas_prendrios", valorPadre: "Si" },
-        { id: "entidad6", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_prendrios", valorPadre: ["1 más", "2 más"] },
+        { id: "entidad7", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_prendrios", valorPadre: ["1 más", "2 más"] },
         { id: "monto_credi_pren2", label: "Monto original $", tipo: "text", dependeDe: "canti_prendrios", valorPadre: ["1 más", "2 más"] },
         { id: "pago_men_pren2", label: "Pago mensual", tipo: "text", dependeDe: "canti_prendrios", valorPadre: ["1 más", "2 más"] },
         { id: "estado_actu_pren2", label: "Indique el estado actual de su prestamo", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "canti_prendrios", valorPadre: ["1 más", "2 más"] },
-        { id: "entidad7", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_prendrios", valorPadre: "2 más" },
+        { id: "entidad8", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_prendrios", valorPadre: "2 más" },
         { id: "monto_credi_pren3", label: "Monto original $", tipo: "text", dependeDe: "canti_prendrios", valorPadre: "2 más" },
         { id: "pago_men_pren3", label: "Pago mensual", tipo: "text", dependeDe: "canti_prendrios", valorPadre: "2 más" },
         { id: "estado_actu_pren3", label: "Indique el estado actual de su prestamo", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "canti_prendrios", valorPadre: "2 más" },
         { id: "tarjeta_credi", label: "¿Posee tarjetas de crédito?", tipo: "radio", opciones: ["Si", "No"] },
-        { id: "entidad8", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "tarjeta_credi", valorPadre: "Si" },
+        { id: "entidad9", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "tarjeta_credi", valorPadre: "Si" },
         { id: "monto_tarjeta1", label: "Monto original $", tipo: "text", dependeDe: "tarjeta_credi", valorPadre: "Si" },
         { id: "pago_men_tarjeta1", label: "Pago mensual", tipo: "text", dependeDe: "tarjeta_credi", valorPadre: "Si" },
         { id: "estado_actu_tarjeta1", label: "Indique el estado actual de su prestamo", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "tarjeta_credi", valorPadre: "Si" },
         { id: "mas_tarjetas", label: "¿Posee más de una tarjeta de crédito?", tipo: "radio", opciones: ["Si", "No"], dependeDe: "tarjeta_credi", valorPadre: "Si" },
         { id: "canti_tarje", label: "¿Cuántas tarjetas de crédito adicionales posee?", tipo: "select", opciones: ["1 más", "2 más", "3 más"], dependeDe: "mas_tarjetas", valorPadre: "Si" },
-        { id: "entidad9", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_tarje", valorPadre: ["1 más", "2 más", "3 más"] },
+        { id: "entidad10", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_tarje", valorPadre: ["1 más", "2 más", "3 más"] },
         { id: "monto_tarjeta2", label: "Monto original $", tipo: "text", dependeDe: "canti_tarje", valorPadre: ["1 más", "2 más", "3 más"] },
         { id: "pago_men_tarjeta2", label: "Pago mensual", tipo: "text", dependeDe: "canti_tarje", valorPadre: ["1 más", "2 más", "3 más"] },
         { id: "estado_actu_tarjeta2", label: "Indique el estado actual de su prestamo", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "canti_tarje", valorPadre: ["1 más", "2 más", "3 más"] },
-        { id: "entidad10", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_tarje", valorPadre: ["2 más", "3 más"] },
+        { id: "entidad11", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_tarje", valorPadre: ["2 más", "3 más"] },
         { id: "monto_tarjeta3", label: "Monto original $", tipo: "text", dependeDe: "canti_tarje", valorPadre: ["2 más", "3 más"] },
         { id: "pago_men_tarjeta3", label: "Pago mensual", tipo: "text", dependeDe: "canti_tarje", valorPadre: ["2 más", "3 más"] },
         { id: "estado_actu_tarjeta3", label: "Indique el estado actual de su prestamo", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "canti_tarje", valorPadre: ["2 más", "3 más"] },
-        { id: "entidad11", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_tarje", valorPadre: "3 más" },
+        { id: "entidad12", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_tarje", valorPadre: "3 más" },
         { id: "monto_tarjeta4", label: "Monto original $", tipo: "text", dependeDe: "canti_tarje", valorPadre: "3 más" },
         { id: "pago_men_tarjeta4", label: "Pago mensual", tipo: "text", dependeDe: "canti_tarje", valorPadre: "3 más" },
         { id: "estado_actu_tarjeta4", label: "Indique el estado actual de su prestamo", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "canti_tarje", valorPadre: "3 más" },
         { id: "pres_auto", label: "¿Posee algún préstamo de auto?", tipo: "radio", opciones: ["Si", "No"] },
-        { id: "entidad12", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "pres_auto", valorPadre: "Si" },
+        { id: "entidad13", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "pres_auto", valorPadre: "Si" },
         { id: "monto_credi_auto1", label: "Monto original $", tipo: "text", dependeDe: "pres_auto", valorPadre: "Si" },
         { id: "pago_men_auto1", label: "Pago mensual", tipo: "text", dependeDe: "pres_auto", valorPadre: "Si" },
         { id: "estado_actu_auto1", label: "Indique el estado actual de su prestamo", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "pres_auto", valorPadre: "Si" },
         { id: "mas_prestamo", label: "¿posee más de un préstamo de auto?", tipo: "radio", opciones: ["Si", "No"], dependeDe: "pres_auto", valorPadre: "Si" },
-        { id: "canti_presta", label: "¿Cuántos préstamos de auto adicionales posee?", tipo: "select", opciones: ["1 más", "2 más"], dependeDe: "mas_prestamo", valorPadre: "Si" },
-        { id: "entidad13", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_presta", valorPadre: ["1 más", "2 más"] },
+        { id: "canti_presta", label: "¿Cuántas préstamos de auto adicionales posee?", tipo: "select", opciones: ["1 más", "2 más"], dependeDe: "mas_prestamo", valorPadre: "Si" },
+        { id: "entidad14", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_presta", valorPadre: ["1 más", "2 más"] },
         { id: "monto_credi_auto2", label: "Monto original $", tipo: "text", dependeDe: "canti_presta", valorPadre: ["1 más", "2 más"] },
         { id: "pago_men_auto2", label: "Pago mensual", tipo: "text", dependeDe: "canti_presta", valorPadre: ["1 más", "2 más"] },
         { id: "estado_actu_auto2", label: "Indique el estado actual de su prestamo", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "canti_presta", valorPadre: ["1 más", "2 más"] },
-        { id: "entidad14", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_presta", valorPadre: "2 más" },
+        { id: "entidad15", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "canti_presta", valorPadre: "2 más" },
         { id: "monto_credi_auto3", label: "Monto original $", tipo: "text", dependeDe: "canti_presta", valorPadre: "2 más" },
         { id: "pago_men_auto3", label: "Pago mensual", tipo: "text", dependeDe: "canti_presta", valorPadre: "2 más" },
         { id: "estado_actu_auto3", label: "Indique el estado actual de su prestamo", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "canti_presta", valorPadre: "2 más" },
         { id: "otra_deuda", label: "¿Posee alguna otra deuda?", tipo: "radio", opciones: ["Si", "No"] },
-        { id: "entidad15", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "otra_deuda", valorPadre: "Si" },
+        { id: "entidad16", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "otra_deuda", valorPadre: "Si" },
         { id: "monto_deuda1", label: "Monto original $", tipo: "text", dependeDe: "otra_deuda", valorPadre: "Si" },
         { id: "pago_deuda1", label: "Pago mensual", tipo: "text", dependeDe: "otra_deuda", valorPadre: "Si" },
         { id: "estado_deuda1", label: "Indique el estado actual de su prestamo", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "otra_deuda", valorPadre: "Si" },
         { id: "mas_deuda", label: "¿Posee más de una deuda?", tipo: "radio", opciones: ["Si", "No"], dependeDe: "otra_deuda", valorPadre: "Si" },
-        { id: "entidad16", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "mas_deuda", valorPadre: ["1 más", "2 más"] },
+        { id: "entidad17", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "mas_deuda", valorPadre: ["1 más", "2 más"] },
         { id: "canti_deuda", label: "¿Cuántas deudas más adicionales posee?", tipo: "select", opciones: ["1 más", "2 más"], dependeDe: "mas_deuda", valorPadre: "Si" },
         { id: "monto_deuda2", label: "Monto original $", tipo: "text", dependeDe: "canti_deuda", valorPadre: ["1 más", "2 más"] },
         { id: "pago_deuda2", label: "Pago mensual", tipo: "text", dependeDe: "canti_deuda", valorPadre: ["1 más", "2 más"] },
         { id: "estado_deuda2", label: "Indique el estado actual de su deuda", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "canti_deuda", valorPadre: ["1 más", "2 más"] },
-        { id: "entidad17", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "mas_deuda", valorPadre: "2 más" },
+        { id: "entidad18", label: "Coloque la entidad con la que posee el crédito", tipo: "text", dependeDe: "mas_deuda", valorPadre: "2 más" },
         { id: "monto_deuda3", label: "Monto original $", tipo: "text", dependeDe: "canti_deuda", valorPadre: "2 más" },
         { id: "pago_deuda3", label: "Pago mensual", tipo: "text", dependeDe: "canti_deuda", valorPadre: "2 más" },
         { id: "estado_deuda3", label: "Indique el estado actual de su deuda", tipo: "select", opciones: ["Al día", "En mora", "Otro"], dependeDe: "canti_deuda", valorPadre: "2 más" },
@@ -683,7 +686,7 @@
         { id: "filial", label: "Empresa (Filial)", tipo: "text", dependeDe: "familiares_laborando", valorPadre: "Si" },
         { id: "parentesco_familiar_laborando", label: "Grado de parentesco", tipo: "text", dependeDe: "familiares_laborando", valorPadre: "Si" },
         { id: "familiar_funcionario", label: "¿Cuenta usted con algún familiar que sea funcionarios o propietarios de empresas proveedoras, competencia directa o que se dedique a la misma actividad de alguna empresa del Grupo Bolívar?", tipo: "radio", opciones: ["Si", "No"] },
-        { id: "cantidad", label: "¿Cuantos familiares posee que sean funcionarios o propietarios?", tipo: "select", opciones: ["1", "2", "3"], dependeDe: "familiar_funcionario", valorPadre: "Si" },
+        { id: "amount", label: "¿Cuantos familiares posee que sean funcionarios o propietarios?", tipo: "select", opciones: ["1", "2", "3"], dependeDe: "familiar_funcionario", valorPadre: "Si" },
         { id: "nombre_familiar_funcionario1", label: "Nombre completo del familiar ", tipo: "text", dependeDe: "cantidad", valorPadre: ["1", "2", "3"] },
         { id: "parentesco_familiar_funcionario1", label: "Grado de parentesco", tipo: "text", dependeDe: "cantidad", valorPadre: ["1", "2", "3"] },
         { id: "empresa_familiar_proveedor1", label: "Empresa de Grupo Bolívar", tipo: "text", dependeDe: "cantidad", valorPadre: ["1", "2", "3"] },
@@ -699,50 +702,50 @@
         { id: "fecha_inicio", label: "Fecha de inicio de relación comercial en cada empresa", tipo: "text", dependeDe: "propi", valorPadre: "Si" },
         { id: "acti_eco", label: "Actividad económica de cada empresa proveedora (sea específico por favor)", tipo: "text", dependeDe: "propi", valorPadre: "Si" },
         { id: "accionario_empre", label: "% accionario en su favor en cada empresa", tipo: "text", dependeDe: "propi", valorPadre: "Si" },
-        { id: "empre_soci", label: "Empresas de Grupo Bplívar propietario o socio", tipo: "text", dependeDe: "propi", valorPadre: "Si" },
+        { id: "empre_soci", label: "Empresas de Grupo Bolívar propietario o socio", tipo: "text", dependeDe: "propi", valorPadre: "Si" },
         { id: "socio_direc", label: "¿Es usted socio, directivo o representante legal de alguna sociedad?", tipo: "radio", opciones: ["Si", "No"] },
         { id: "nombre_empresas", label: "Nombre de las empresas", tipo: "text", dependeDe: "socio_direc", valorPadre: "Si" },
         { id: "cedula", label: "No. cédula jurídica de cada empresa / matrícula de comercio / Razón Social", tipo: "text", dependeDe: "socio_direc", valorPadre: "Si" },
         { id: "condicion_empresas", label: "Condición (socio y % accionario, representative, cargo de administración, etc.) de cada empresa", tipo: "text", dependeDe: "socio_direc", valorPadre: "Si" },
         { id: "actividad_eco", label: "Actividad económica de cada empresa (sea especifico por favor)", tipo: "text", dependeDe: "socio_direc", valorPadre: "Si" },
-        { id: "indi_colec", label: "¿Ha participado de manera individual o colectiva en la aprobación de créditos en favor de clientes que representan algún conflicto de interés? (créditos a favor de familiares ya sean personas físicas o personas jurídicas). Entiéndase conflicto de interés aquellos casos donde la persona física es su familiar o la persona jurídica esta representada por algún familiar o su familiar es accionista (indicar %) de dicha empresa.", tipo: "radio", opciones: ["Si", "No"] },
+        { id: "indi_colec", label: "¿Ha participado de manera individual o colectiva en la aprobación de créditos en favor de clientes que representan algún conflicto de interés? (créditos a favor de familiares ya sean personas físicas o personas jurídicas). Entiéndase conflicto de interés aquellos casos donde la persona física es su familiar o la persona jurídica esta representada por algún familiar o su familiar o usted son accionista (indicar %) de dicha empresa.", tipo: "radio", opciones: ["Si", "No"] },
         { id: "empresas", label: "Empresas", tipo: "text", dependeDe: "indi_colec", valorPadre: "Si" },
         { id: "fechas", label: "Fechas", tipo: "text", dependeDe: "indi_colec", valorPadre: "Si" },
         { id: "tipo_credi", label: "Tipo de crédito", tipo: "text", dependeDe: "indi_colec", valorPadre: "Si" },
         { id: "montos", label: "Montos", tipo: "text", dependeDe: "indi_colec", valorPadre: "Si" },
-        { id: "nom_fam", label: "Nombre de los familiares", tipo: "text", dependeDe: "indi_colec", valorPadre: "Si" },
-        { id: "grad_paren", label: "Grado de parentesco", tipo: "text", dependeDe: "indi_colec", valorPadre: "Si" },
-        { id: "indivi", label: "¿Ha participado de manera individual o colectiva en la aprobación de créditos en su favor ya sea persona física o en favor de una persona jurídica de la cual usted forme parte como accionista o representante legal?", tipo: "radio", opciones: ["Si", "No"] },
-        { id: "canti_in", label: "¿A cuantos clientes le proporcionó dicha aprobación?", tipo: "select", opciones: ["1", "2", "3"], dependeDe: "indivi", valorPadre: "Si" },
-        { id: "cli1", label: "Cliente 1", tipo: "text", dependeDe: "canti_in", valorPadre: ["1", "2", "3"] },
-        { id: "fecha_cli1", label: "Fecha de aprobación Cliente 1", tipo: "date", dependeDe: "canti_in", valorPadre: ["1", "2", "3"] },
-        { id: "tipo_cli1", label: "Tipo de crédito de Cliente 1", tipo: "text", dependeDe: "canti_in", valorPadre: ["1", "2", "3"] },
-        { id: "cli2", label: "Cliente 2", tipo: "text", dependeDe: "canti_in", valorPadre: ["2", "3"] },
-        { id: "fecha_cli2", label: "Fecha de aprobación Cliente 2", tipo: "date", dependeDe: "canti_in", valorPadre: ["2", "3"] },
-        { id: "tipo_cli2", label: "Tipo de crédito de Cliente 2", tipo: "text", dependeDe: "canti_in", valorPadre: ["2", "3"] },
-        { id: "cli3", label: "Cliente 3", tipo: "text", dependeDe: "canti_in", valorPadre: "3" },
-        { id: "fecha_cli3", label: "Fecha de aprobación Cliente 3", tipo: "date", dependeDe: "canti_in", valorPadre: "3" },
-        { id: "tipo_cli3", label: "Tipo de crédito de Cliente 3", tipo: "text", dependeDe: "canti_in", valorPadre: "3" },
-        { id: "provee", label: "¿Existen proveedores del banco donde tenga un potencial conflicto de interés? (Conflicto de interés son aquellos casos donde el proveedor persona física es usted o algún familiar o la persona jurídica esta representada por algún familiar o su familiar o usted son accionistas de dicha empresa)", tipo: "radio", opciones: ["Si", "No"] },
-        { id: "canti_prove", label: "¿Cuantos proveedores son?", tipo: "select", opciones: ["1", "2", "3"], dependeDe: "provee", valorPadre: "Si" },
-        { id: "prove1", label: "Proveedor 1", tipo: "text", dependeDe: "canti_prove", valorPadre: ["1", "2", "3"] },
-        { id: "fecha_pro1", label: "Fecha de aprobación de compra de proveedor 1", tipo: "date", dependeDe: "canti_prove", valorPadre: ["1", "2", "3"] },
-        { id: "produ_servi1", label: "Producto o servicio adquirido de proveedor 1", tipo: "text", dependeDe: "canti_prove", valorPadre: ["1", "2", "3"] },
-        { id: "monto_ope1", label: "Monto de operación proveedor 1", tipo: "text", dependeDe: "canti_prove", valorPadre: ["1", "2", "3"] },
-        { id: "nom_fam1", label: "Nombre del familiar - proveedor 1", tipo: "text", dependeDe: "canti_prove", valorPadre: ["1", "2", "3"] },
-        { id: "grad_pro1", label: "Grado de parentesco - proveedor 1", tipo: "text", dependeDe: "canti_prove", valorPadre: ["1", "2", "3"] },
-        { id: "prove2", label: "Proveedor 2", tipo: "text", dependeDe: "canti_prove", valorPadre: ["2", "3"] },
-        { id: "fecha_pro2", label: "Fecha de aprobación de compra de proveedor 2", tipo: "date", dependeDe: "canti_prove", valorPadre: ["2", "3"] },
-        { id: "produ_servi2", label: "Producto o servicio adquirido de proveedor 2", tipo: "text", dependeDe: "canti_prove", valorPadre: ["2", "3"] },
-        { id: "monto_ope2", label: "Monto de operación proveedor 2", tipo: "text", dependeDe: "canti_prove", valorPadre: ["2", "3"] },
-        { id: "nom_fam2", label: "Nombre del familiar - proveedor 2", tipo: "text", dependeDe: "canti_prove", valorPadre: ["2", "3"] },
-        { id: "grad_pro2", label: "Grado de parentesco - proveedor 2", tipo: "text", dependeDe: "canti_prove", valorPadre: ["2", "3"] },
-        { id: "prove3", label: "Proveedor 3", tipo: "text", dependeDe: "canti_prove", valorPadre: "3" },
-        { id: "fecha_pro3", label: "Fecha de aprobación de compra de proveedor 3", tipo: "date", dependeDe: "canti_prove", valorPadre: "3" },
-        { id: "produ_servi3", label: "Producto o servicio adquirido de proveedor 3", tipo: "text", dependeDe: "canti_prove", valorPadre: "3" },
-        { id: "monto_ope3", label: "Monto de operación proveedor 3", tipo: "text", dependeDe: "canti_prove", valorPadre: "3" },
-        { id: "nom_fam3", label: "Nombre del familiar - proveedor 3", tipo: "text", dependeDe: "canti_prove", valorPadre: "3" },
-        { id: "grad_pro3", label: "Grado de parentesco - proveedor 3", tipo: "text", dependeDe: "canti_prove", valorPadre: "3" },
+        { id: "nombre_familiares_conflicto", label: "Nombre de los familiares", tipo: "text", dependeDe: "indi_colec", valorPadre: "Si" },
+        { id: "grado_parentesco_conflicto", label: "Grado de parentesco", tipo: "text", dependeDe: "indi_colec", valorPadre: "Si" },
+        { id: "aprobacion_credito_favor", label: "¿Ha participado de manera individual o colectiva en la aprobación de créditos en su favor ya sea persona física o en favor de una persona jurídica de la cual usted forme parte como accionista o representante legal?", tipo: "radio", opciones: ["Si", "No"] },
+        { id: "cantidad_clientes", label: "¿A cuantos clientes le proporcionó dicha aprobación?", tipo: "select", opciones: ["1", "2", "3"], dependeDe: "aprobacion_credito_favor", valorPadre: "Si" },
+        { id: "cliente_1", label: "Cliente 1", tipo: "text", dependeDe: "cantidad_clientes", valorPadre: ["1", "2", "3"] },
+        { id: "fecha_aprobacion_cliente_1", label: "Fecha de aprobación Cliente 1", tipo: "date", dependeDe: "cantidad_clientes", valorPadre: ["1", "2", "3"] },
+        { id: "tipo_credito_cliente_1", label: "Tipo de crédito de Cliente 1", tipo: "text", dependeDe: "cantidad_clientes", valorPadre: ["1", "2", "3"] },
+        { id: "cliente_2", label: "Cliente 2", tipo: "text", dependeDe: "cantidad_clientes", valorPadre: ["2", "3"] },
+        { id: "fecha_aprobacion_cliente_2", label: "Fecha de aprobación Cliente 2", tipo: "date", dependeDe: "cantidad_clientes", valorPadre: ["2", "3"] },
+        { id: "tipo_credito_cliente_2", label: "Tipo de crédito de Cliente 2", tipo: "text", dependeDe: "cantidad_clientes", valorPadre: ["2", "3"] },
+        { id: "cliente_3", label: "Cliente 3", tipo: "text", dependeDe: "cantidad_clientes", valorPadre: "3" },
+        { id: "fecha_aprobacion_cliente_3", label: "Fecha de aprobación Cliente 3", tipo: "date", dependeDe: "cantidad_clientes", valorPadre: "3" },
+        { id: "tipo_credito_cliente_3", label: "Tipo de crédito de Cliente 3", tipo: "text", dependeDe: "cantidad_clientes", valorPadre: "3" },
+        { id: "proveedores_banco", label: "¿Existen proveedores del banco donde tenga un potencial conflicto de interés? (Conflicto de interés son aquellos casos donde el proveedor persona física es usted o algún familiar o la persona jurídica esta representada por algún familiar o su familiar o usted son accionistas de dicha empresa)", tipo: "radio", opciones: ["Si", "No"] },
+        { id: "cantidad_proveedores", label: "¿Cuantos proveedores son?", tipo: "select", opciones: ["1", "2", "3"], dependeDe: "proveedores_banco", valorPadre: "Si" },
+        { id: "proveedor_1", label: "Proveedor 1", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: ["1", "2", "3"] },
+        { id: "fecha_aprobacion_proveedor_1", label: "Fecha de aprobación de compra de proveedor 1", tipo: "date", dependeDe: "cantidad_proveedores", valorPadre: ["1", "2", "3"] },
+        { id: "producto_servicio_proveedor_1", label: "Producto o servicio adquirido de proveedor 1", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: ["1", "2", "3"] },
+        { id: "monto_operacion_proveedor_1", label: "Monto de operación proveedor 1", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: ["1", "2", "3"] },
+        { id: "nombre_familiar_proveedor_1", label: "Nombre del familiar - proveedor 1", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: ["1", "2", "3"] },
+        { id: "grado_parentesco_proveedor_1", label: "Grado de parentesco - proveedor 1", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: ["1", "2", "3"] },
+        { id: "proveedor_2", label: "Proveedor 2", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: ["2", "3"] },
+        { id: "fecha_aprobacion_proveedor_2", label: "Fecha de aprobación de compra de proveedor 2", tipo: "date", dependeDe: "cantidad_proveedores", valorPadre: ["2", "3"] },
+        { id: "producto_servicio_proveedor_2", label: "Producto o servicio adquirido de proveedor 2", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: ["2", "3"] },
+        { id: "monto_operacion_proveedor_2", label: "Monto de operación proveedor 2", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: ["2", "3"] },
+        { id: "nombre_familiar_proveedor_2", label: "Nombre del familiar - proveedor 2", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: ["2", "3"] },
+        { id: "grado_parentesco_proveedor_2", label: "Grado de parentesco - proveedor 2", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: ["2", "3"] },
+        { id: "proveedor_3", label: "Proveedor 3", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: "3" },
+        { id: "fecha_aprobacion_proveedor_3", label: "Fecha de aprobación de compra de proveedor 3", tipo: "date", dependeDe: "cantidad_proveedores", valorPadre: "3" },
+        { id: "producto_servicio_proveedor_3", label: "Producto o servicio adquirido de proveedor 3", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: "3" },
+        { id: "monto_operacion_proveedor_3", label: "Monto de operación proveedor 3", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: "3" },
+        { id: "nombre_familiar_proveedor_3", label: "Nombre del familiar - proveedor 3", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: "3" },
+        { id: "grado_parentesco_proveedor_3", label: "Grado de parentesco - proveedor 3", tipo: "text", dependeDe: "cantidad_proveedores", valorPadre: "3" },
         { id: "obsequio", label: "¿Ha recibido usted o algún familiar algún obsequio de relativo valor económico o invitaciones a eventos o actividades de capacitación por parte de proveedores o potenciales proveedores? (Relativo valor económico: Manual de Riesgo Reputacional se establece la política para la aceptación y ofrecimiento de regalos, mayor a $100.00", tipo: "radio", opciones: ["Si", "No"] },
         { id: "canti_obse", label: "¿Cuantos obsequios ha recibido?", tipo: "select", opciones: ["1", "2", "3"], dependeDe: "obsequio", valorPadre: "Si" },
         { id: "desc1", label: "Descripción del obsequio recibido", tipo: "text", dependeDe: "canti_obse", valorPadre: ["1", "2", "3"] },
@@ -814,29 +817,27 @@
     }
   ];
 
-
-  function mostrarLogin() { document.getElementById('auth-registro').style.display='none'; document.getElementById('auth-login').style.display='block'; } 
+  function mostrarLogin() { document.getElementById('auth-registro').style.display='none'; document.getElementById('auth-login').style.display='block'; }
   function mostrarRegistro() { document.getElementById('auth-login').style.display='none'; document.getElementById('auth-registro').style.display='block'; }
 
   function intentarLogin() {
     const email = document.getElementById('login-email').value;
     const id = document.getElementById('login-id').value;
-  
+    
     if(!email || !id) return alert("Por favor complete los campos.");
 
-    // ¡REVISA ESTA PARTE! Debe decir fetch, NO google.script.run
     fetch(URL_GOOGLE_SCRIPT, {
       method: "POST",
       body: JSON.stringify({
         accion: "login",
-        datos: { email: email, identificacion: id }
+        datos: { email: email, identificación: id }
       })
     })
     .then(res => res.json())
     .then(res => {
       if(res.resultado === true) { 
         usuarioEmail = email;
-        document.getElementById('auth-login').style.display='none'; // Revisa que diga .style.display y no .style.style.display
+        document.getElementById('auth-login').style.display='none';
         document.getElementById('main-content').style.display='block';
         generarSidebar();
       } else {
@@ -849,10 +850,9 @@
   function intentarRegistro() {
     const email = document.getElementById('reg-email').value;
     const id = document.getElementById('reg-id').value;
-  
+    
     if(!email || !id) return alert("Por favor complete los campos.");
 
-    // Enviamos los datos a Google mediante un POST externo
     fetch(URL_GOOGLE_SCRIPT, {
       method: "POST",
       body: JSON.stringify({
@@ -862,7 +862,7 @@
     })
     .then(res => res.json())
     .then(res => {
-      alert(res.resultado); // Muestra el mensaje de "Registro exitoso" o "Ya registrado"
+      alert(res.resultado);
       mostrarLogin();
     })
     .catch(error => console.error("Error:", error));
@@ -874,10 +874,9 @@
       <div id="side-item-${i}" class="nav-item-custom ${i === seccionActual ? 'active' : ''}">
         ${i + 1}. ${sec.titulo}
       </div>
-  `  ).join('');
+    ` ).join('');
   }
 
-  // Función para pasar de la Parte A a la Parte B
   function pasarAParteB() {
     const checkA = document.getElementById('checkTerminos');
     if (checkA.checked) {
@@ -889,22 +888,20 @@
     }
   }
 
-  // Función para volver a la Parte A si se arrepiente
   function volverAParteA() {
     document.getElementById('id-sec-terminos-b').style.display = 'none';
     document.getElementById('sec-terminos').style.display = 'block';
   }
 
-  // Función final para entrar al formulario
   function iniciarFormulario() {
     const checkA = document.getElementById('checkTerminos');
     const checkB = document.getElementById('checkTerminosB');
-  
+    
     if (checkA.checked && checkB.checked) {
       document.getElementById('id-sec-terminos-b').style.display = 'none';
       document.getElementById('contenedor-secciones').style.display = 'block';
       document.getElementById('barra-progreso').style.display = 'flex';
-      renderizar(); // Inicia el dibujo de las preguntas
+      renderizar(); 
       window.scrollTo(0,0);
     } else {
       alert("Debe aceptar ambas partes de los términos (A y B) para comenzar el formulario.");
@@ -919,7 +916,7 @@
       sec.preguntas.forEach(p => {
         let depClass = p.dependeDe ? 'pregunta-oculta' : '';
         html += `<div class="mb-3 ${depClass}" id="div-${p.id}"><label class="form-label fw-bold">${p.label}</label>`;
-      
+        
         if(p.tipo === 'mapa') {
           html += `<div id="map"></div><input type="hidden" name="${p.id}" id="input-gps">`;
         } else if(p.tipo === 'text' || p.tipo === 'email' || p.tipo === 'date') {
@@ -940,17 +937,16 @@
       html += `</div></div>`;
       container.innerHTML += html;
     });
-  
+    
     if(CONFIG_FORMULARIO[seccionActual].preguntas.some(p => p.tipo === 'mapa')) setTimeout(initMapa, 500);
     actualizarBarra();
   }
 
   function initMapa() {
-    // Coordenadas aproximadas del centro de la Ciudad de Panamá
     const posPanama = { lat: 8.9833, lng: -79.5167 }; 
-  
+    
     mapa = new google.maps.Map(document.getElementById("map"), { 
-      zoom: 13, // Nivel de acercamiento
+      zoom: 13, 
       center: posPanama 
     });
 
@@ -959,8 +955,7 @@
       map: mapa, 
       draggable: true 
     });
-  
-    // Evento para capturar las coordenadas cuando mueven el pin
+    
     google.maps.event.addListener(marcador, 'dragend', function() {
       document.getElementById('input-gps').value = marcador.getPosition().lat().toFixed(6) + ", " + marcador.getPosition().lng().toFixed(6);
     });
@@ -990,7 +985,7 @@
 
   function actualizarSidebar() {
     CONFIG_FORMULARIO.forEach((_, i) => {
-      const el = document.getElementById(`side-item-${i}`);
+      const el = document.getElementById('side-item-' + i);
       if(el) {
         el.classList.remove('active', 'completed');
         if(i < seccionActual) el.classList.add('completed');
@@ -1021,15 +1016,15 @@
 
   function finalizar() {
     if(!validarSeccion()) return;
-  
+    
     const data = { "email_usuario": usuarioEmail };
-  
+    
     CONFIG_FORMULARIO.forEach(sec => {
       sec.preguntas.forEach(p => {
         const el = document.getElementsByName(p.id);
         if(el.length > 0) {
           const divPadre = document.getElementById(`div-${p.id}`);
-        
+          
           if (divPadre && divPadre.style.display === 'none') {
             data[p.id] = "";
           } else {
@@ -1039,11 +1034,10 @@
         }
       });
     });
-  
+    
     document.getElementById('btnEnviar').disabled = true;
-  
-    // Enviamos todo el bloque de respuestas a Google Sheets
-    fetch(https://script.google.com/a/macros/davivienda.com.sv/s/AKfycbzG9P8sfh1XA6bowcvdoxONBj54Ih3LNyIoUMxsBayMFKovzy6xYA4M3yh_vJXeYQAv/exec, {
+    
+    fetch(URL_GOOGLE_SCRIPT, {
       method: "POST",
       body: JSON.stringify({
         accion: "guardar",
@@ -1065,9 +1059,6 @@
       document.getElementById('btnEnviar').disabled = false;
     });
   }
-
-  le.script.run.withSuccessHandler(() => { alert("¡Guardado!"); location.reload(); }).guardarDatos(data);
-
 </script>
 </body>
 </html>
