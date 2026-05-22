@@ -847,7 +847,7 @@ function intentarLogin() {
   if(!email || !id) return alert("Por favor complete los campos.");
 
   // ¡REVISA ESTA PARTE! Debe decir fetch, NO google.script.run
-  fetch(https://script.google.com/a/macros/davivienda.com.sv/s/AKfycbzG9P8sfh1XA6bowcvdoxONBj54Ih3LNyIoUMxsBayMFKovzy6xYA4M3yh_vJXeYQAv/exec, {
+  fetch(URL_GOOGLE_SCRIPT, {
     method: "POST",
     body: JSON.stringify({
       accion: "login",
